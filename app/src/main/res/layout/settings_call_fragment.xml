@@ -173,6 +173,16 @@
 
                 <include
                     layout="@layout/settings_widget_text"
+                    linphone:title="@{@string/call_settings_auto_answer_positive_match_title}"
+                    linphone:subtitle="@{@string/call_settings_auto_answer_positive_match_summary}"
+                    linphone:listener="@{viewModel.autoAnswerPositiveMatchListener}"
+                    linphone:defaultValue="@{viewModel.autoAnswerPositiveMatch.toString()}"
+                    linphone:inputType="@{InputType.TYPE_CLASS_TEXT}"
+                    linphone:enabled="@{viewModel.autoAnswer}"
+                    android:visibility="@{viewModel.autoAnswer ? View.VISIBLE : View.GONE}"/>
+
+                <include
+                    layout="@layout/settings_widget_text"
                     linphone:title="@{@string/call_settings_incoming_timeout_title}"
                     linphone:subtitle="@{@string/call_settings_incoming_timeout_summary}"
                     linphone:listener="@{viewModel.incomingTimeoutListener}"

@@ -587,6 +587,8 @@
     <string name="call_settings_auto_answer_title">Auto answer incoming calls</string>
     <string name="call_settings_auto_answer_delay_title">Auto answer time</string>
     <string name="call_settings_auto_answer_delay_summary">in milliseconds</string>
+    <string name="call_settings_auto_answer_positive_match_title">Match caller address</string>
+    <string name="call_settings_auto_answer_positive_match_summary">regular expression</string>
     <string name="call_settings_incoming_timeout_title">Incoming call timeout</string>
     <string name="call_settings_incoming_timeout_summary">in seconds</string>
     <string name="call_settings_voice_mail_uri_title">Voice mail URI</string>

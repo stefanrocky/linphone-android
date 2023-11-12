@@ -175,6 +175,24 @@ class CallSettingsViewModel : GenericSettingsViewModel() {
     }
     val autoAnswerDelay = MutableLiveData<Int>()
 
+    val autoAnswerPositiveMatchListener = object : SettingListenerStub() {
+        override fun onTextValueChanged(newValue: String) {
+            try {
+                var value = newValue.trim()
+                if (value.length == 0) {
+                    prefs.autoAnswerPositiveMatch = value
+                } else {
+                    var regex = value.toRegex()
+                    if (regex != null) {
+                        prefs.autoAnswerPositiveMatch = value
+                    }
+                }
+            } catch (_: Exception) {
+            }
+        }
+    }
+    val autoAnswerPositiveMatch = MutableLiveData<String>()
+
     val incomingTimeoutListener = object : SettingListenerStub() {
         override fun onTextValueChanged(newValue: String) {
             try {
@@ -256,6 +274,7 @@ class CallSettingsViewModel : GenericSettingsViewModel() {
         autoStart.value = prefs.callRightAway
         autoAnswer.value = prefs.autoAnswerEnabled
         autoAnswerDelay.value = prefs.autoAnswerDelay
+        autoAnswerPositiveMatch.value = prefs.autoAnswerPositiveMatch
         incomingTimeout.value = core.incTimeout
         voiceMailUri.value = prefs.voiceMailUri
         redirectToVoiceMailIncomingDeclinedCalls.value = prefs.redirectDeclinedCallToVoiceMail

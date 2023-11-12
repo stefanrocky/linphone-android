@@ -295,6 +295,12 @@ class CorePreferences constructor(private val context: Context) {
             config.setInt("app", "auto_answer_delay", value)
         }
 
+    var autoAnswerPositiveMatch: String?
+        get() = config.getString("app", "auto_answer_positive_match", null)
+        set(value) {
+            config.setString("app", "auto_answer_positive_match", value)
+        }
+
     // Show overlay inside of application
     var showCallOverlay: Boolean
         get() = config.getBool("app", "call_overlay", true)

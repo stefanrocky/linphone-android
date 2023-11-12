@@ -187,22 +187,44 @@ class CoreContext(
                     onIncomingReceived()
                 }
 
-                if (corePreferences.autoAnswerEnabled) {
-                    val autoAnswerDelay = corePreferences.autoAnswerDelay
-                    if (autoAnswerDelay == 0) {
-                        Log.w("[Context] Auto answering call immediately")
-                        answerCall(call)
-                    } else {
-                        Log.i(
-                            "[Context] Scheduling auto answering in $autoAnswerDelay milliseconds"
+                var autoAnswer = corePreferences.autoAnswerEnabled
+                if (autoAnswer) {
+                    var autoAnswerPositiveMatch = corePreferences.autoAnswerPositiveMatch
+                    if (autoAnswerPositiveMatch?.length!! > 0) {
+                        var addressString = call.remoteAddress.asStringUriOnly()
+                        if (addressString.length == 0) {
+                            autoAnswer = false
+                        } else {
+                            autoAnswer = false
+                            var regex = autoAnswerPositiveMatch?.toRegex(RegexOption.IGNORE_CASE)
+                            if (regex?.find(addressString) != null) {
+                                autoAnswer = true
+                            }
+                        }
+                        Log.w(
+                            "[Context] Auto answering call ${call.remoteAddress.asStringUriOnly()}, enabled=$autoAnswer with match: '$autoAnswerPositiveMatch'"
                         )
-                        handler.postDelayed(
-                            {
-                                Log.w("[Context] Auto answering call")
-                                answerCall(call)
-                            },
-                            autoAnswerDelay.toLong()
-                        )
+                    }
+
+                    if (autoAnswer) {
+                        val autoAnswerDelay = corePreferences.autoAnswerDelay
+                        if (autoAnswerDelay == 0) {
+                            Log.w(
+                                "[Context] Auto answering call ${call.remoteAddress.asStringUriOnly()} immediately"
+                            )
+                            answerCall(call)
+                        } else {
+                            Log.i(
+                                "[Context] Scheduling auto answering in $autoAnswerDelay milliseconds"
+                            )
+                            handler.postDelayed(
+                                {
+                                    Log.w("[Context] Auto answering call")
+                                    answerCall(call)
+                                },
+                                autoAnswerDelay.toLong()
+                            )
+                        }
                     }
                 }
             } else if (state == Call.State.OutgoingProgress) {
